@@ -125,6 +125,8 @@ elif [ "$cmd" = "update-manager-local" ]; then
   build $ROOT/images/manager manager latest
 
 elif [ "$cmd" = "update" ]; then
+  build $ROOT/images/manager manager latest
+  exit 0
   if [ "$env" != "dev" ]; then
     build_and_push $ROOT/images/manager manager latest
 

@@ -27,6 +27,17 @@ gateways:
     labels:
       app: operator-istio-gateway
       istio: operator-ingressgateway
+    replicaCount: 1
+    autoscaleMin: 1
+    autoscaleMax: 5
+    resources:
+      requests:
+       cpu: 1m
+      #  cpu: 100m
+      #  memory: 128Mi
+      limits:
+       cpu: 2000m
+       memory: 1024Mi
     type: LoadBalancer
     ports:
     - port: 80
@@ -55,6 +66,17 @@ gateways:
     labels:
       app: apis-istio-gateway
       istio: apis-ingressgateway
+    replicaCount: 1
+    autoscaleMin: 1
+    autoscaleMax: 5
+    resources:
+      requests:
+       cpu: 1m
+      #  cpu: 100m
+      #  memory: 128Mi
+      limits:
+       cpu: 2000m
+       memory: 1024Mi
     type: LoadBalancer
     ports:
     - port: 80
@@ -92,6 +114,14 @@ mixer:
     enabled: false
   telemetry:
     enabled: true
+    resources:
+      requests:
+        cpu: 1m
+        # cpu: 1000m
+        # memory: 1G
+      limits:
+        cpu: 4800m
+        memory: 4G
   env:
     AWS_REGION: $CORTEX_REGION
     LOG_GROUP_NAME: $CORTEX_LOG_GROUP
@@ -99,6 +129,15 @@ mixer:
 pilot:
   image: $CORTEX_IMAGE_ISTIO_PILOT
   enabled: true
+  sidecar: false
+  resources:
+    requests:
+      cpu: 1m
+      # cpu: 500m
+      # memory: 2048Mi
+    limits:
+      cpu: 2000m
+      memory: 2048Mi
 
 security:
   image: $CORTEX_IMAGE_ISTIO_CITADEL
@@ -123,5 +162,16 @@ global:
   proxy:
     autoInject: disabled
     image: $CORTEX_IMAGE_ISTIO_PROXY
+    resources:
+      requests:
+        cpu: 1m
+        # cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 2000m
+        memory: 1024Mi
   proxy_init:
     image: $CORTEX_IMAGE_ISTIO_PROXY_INIT
+  defaultResources:
+    requests:
+      cpu: 10m
